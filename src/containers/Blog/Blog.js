@@ -1,28 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 // import axios from 'axios';
 //import axios from '../../axios';
-import { Route, NavLink } from 'react-router-dom'
+import { Route, NavLink, Switch, Redirect} from "react-router-dom";
 
-import './Blog.css'
-import Posts from './Posts/Posts'
-import NewPost from './NewPost/NewPost'
-import FullPost from './FullPost/FullPost'
+import "./Blog.css";
+import Posts from "./Posts/Posts";
+import NewPost from "./NewPost/NewPost";
+
 
 class Blog extends Component {
-  render () {
+  state = {
+    auth:false,
+  }
+  render() {
     return (
-      <div className='Blog'>
+      <div className="Blog">
         <header>
           <nav>
             <ul>
               <li>
                 <NavLink
-                  to='/'
+                  to="/posts/"
                   exact
-                  activeClassName='my-active'
+                  activeClassName="my-active"
                   activeStyle={{
-                    color: '#fa923f',
-                    textDecoration: 'underline'
+                    color: "#fa923f",
+                    textDecoration: "underline",
                   }}
                 >
                   Posts
@@ -31,9 +34,9 @@ class Blog extends Component {
               <li>
                 <NavLink
                   to={{
-                    pathname: '/new-post',
-                    hash: '#submit',
-                    search: '?quick-submit=true'
+                    pathname: "/new-post",
+                    hash: "#submit",
+                    search: "?quick-submit=true",
                   }}
                 >
                   New Post
@@ -43,12 +46,15 @@ class Blog extends Component {
           </nav>
         </header>
         {/*<Route path="/" exact render={()=> <h1>Home</h1>} />*/}
-        <Route path='/' exact component={Posts} />
-        <Route path='/new-post' exact component={NewPost} />
-        <Route path='/:id' exact component={FullPost} />
+        <Switch>
+          {this.state.auth ? <Route path="/new-post" exact component={NewPost} /> : null }
+          <Route path="/posts"  component={Posts} />
+          <Route render={()=> <h1>Not Found</h1> } />
+          {/* <Redirect from="/" to="/posts/" /> */}
+        </Switch>
       </div>
-    )
+    );
   }
 }
 
-export default Blog
+export default Blog;
